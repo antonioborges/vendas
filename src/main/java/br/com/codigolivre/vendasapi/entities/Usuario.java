@@ -1,11 +1,14 @@
 package br.com.codigolivre.vendasapi.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Usuario implements Serializable {
@@ -18,6 +21,9 @@ public class Usuario implements Serializable {
 	private String email;
 	private String telefone;
 	private String senha;
+
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
 
 	public Usuario() {
 
@@ -69,6 +75,11 @@ public class Usuario implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	// no caso de coleções acresenta apenas o método GET
+	public List<Pedido> getPedidos() {
+		return pedidos;
 	}
 
 	@Override
