@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -22,6 +24,10 @@ public class Usuario implements Serializable {
 	private String telefone;
 	private String senha;
 
+	// cuidado com a associação de mão dupla - gera loop infinito.
+	// colocar o JsonIgnore em um dos dois lados
+	// JsonIgnore é colocado do lado do OneToMany.
+	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 
