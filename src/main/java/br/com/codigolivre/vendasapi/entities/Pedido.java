@@ -11,7 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
+
+import br.com.codigolivre.vendasapi.entities.enums.PedidoStatus;
 
 @Entity
 public class Pedido implements Serializable {
@@ -24,6 +25,8 @@ public class Pedido implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant instante;
 
+	private Integer pedidoStatus;
+
 	// cuidado com a associação de mão dupla - gera loop infinito.
 	// colocar o JsonIgnore em um dos dois lados
 	@ManyToOne
@@ -34,9 +37,10 @@ public class Pedido implements Serializable {
 
 	}
 
-	public Pedido(Long id, Instant instante, Usuario cliente) {
+	public Pedido(Long id, Instant instante, PedidoStatus pedidoStatus, Usuario cliente) {
 		this.id = id;
 		this.instante = instante;
+		setPedidoStatus(pedidoStatus);
 		this.cliente = cliente;
 	}
 
@@ -54,6 +58,16 @@ public class Pedido implements Serializable {
 
 	public void setInstante(Instant instante) {
 		this.instante = instante;
+	}
+
+	public PedidoStatus getPedidoStatus() {
+		return PedidoStatus.valueOf(pedidoStatus);
+	}
+
+	public void setPedidoStatus(PedidoStatus pedidoStatus) {
+		if (pedidoStatus != null) {
+			this.pedidoStatus = pedidoStatus.getCode();
+		}
 	}
 
 	public Usuario getCliente() {
