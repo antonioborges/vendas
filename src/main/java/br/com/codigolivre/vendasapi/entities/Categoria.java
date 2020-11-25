@@ -8,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Categoria implements Serializable {
@@ -22,8 +25,8 @@ public class Categoria implements Serializable {
 	// em coleções usar somente o método get().
 	// nao coloca coleções nos construtores.
 	// nao coloca coleções nos construtores. porque já foi instanciada.
-
-	@javax.persistence.Transient
+	@JsonIgnore
+	@ManyToMany(mappedBy = "categorias")
 	private Set<Produto> produtos = new HashSet<>();
 
 	public Categoria() {
