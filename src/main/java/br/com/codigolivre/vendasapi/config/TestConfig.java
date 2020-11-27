@@ -2,20 +2,21 @@ package br.com.codigolivre.vendasapi.config;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.dom4j.xpp.ProxyXmlStartTag;
-import org.hibernate.event.internal.ProxyVisitor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import br.com.codigolivre.vendasapi.entities.Categoria;
+import br.com.codigolivre.vendasapi.entities.ItensDoPedido;
 import br.com.codigolivre.vendasapi.entities.Pedido;
 import br.com.codigolivre.vendasapi.entities.Produto;
 import br.com.codigolivre.vendasapi.entities.Usuario;
 import br.com.codigolivre.vendasapi.entities.enums.PedidoStatus;
 import br.com.codigolivre.vendasapi.repositories.CategoriaRepository;
+import br.com.codigolivre.vendasapi.repositories.ItensDoPedidoRepository;
 import br.com.codigolivre.vendasapi.repositories.PedidoRepository;
 import br.com.codigolivre.vendasapi.repositories.ProdutoRepository;
 import br.com.codigolivre.vendasapi.repositories.UsuarioRepository;
@@ -34,13 +35,17 @@ public class TestConfig implements CommandLineRunner {
 
 	private ProdutoRepository produtoRepository;
 
+	private ItensDoPedidoRepository itensDoPedidoRepository;
+
 	public TestConfig(UsuarioRepository usuarioRepository, PedidoRepository pedidoRepository,
-			CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository) {
+			CategoriaRepository categoriaRepository, ProdutoRepository produtoRepository,
+			ItensDoPedidoRepository itensDoPedidoRepository) {
 
 		this.usuarioRepository = usuarioRepository;
 		this.pedidoRepository = pedidoRepository;
 		this.categoriaRepository = categoriaRepository;
 		this.produtoRepository = produtoRepository;
+		this.itensDoPedidoRepository = itensDoPedidoRepository;
 	}
 
 	@Override
@@ -84,6 +89,13 @@ public class TestConfig implements CommandLineRunner {
 		usuarioRepository.saveAll(Arrays.asList(u1, u2));
 
 		pedidoRepository.saveAll(Arrays.asList(p1, p2, p3));
+
+		ItensDoPedido ped1 = new ItensDoPedido(prod1, p1, 2, prod1.getPreco());
+		ItensDoPedido ped2 = new ItensDoPedido(prod3, p1, 1, prod3.getPreco());
+		ItensDoPedido ped3 = new ItensDoPedido(prod3, p2, 2, prod3.getPreco());
+		ItensDoPedido ped4 = new ItensDoPedido(prod5, p3, 2, prod5.getPreco());
+
+		itensDoPedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3, ped4));
 
 	}
 
