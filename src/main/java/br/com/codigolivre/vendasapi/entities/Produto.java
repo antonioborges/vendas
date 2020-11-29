@@ -2,7 +2,6 @@ package br.com.codigolivre.vendasapi.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Produto implements Serializable {
@@ -32,6 +34,11 @@ public class Produto implements Serializable {
 	@ManyToMany
 	@JoinTable(name = "produto_categoria", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private Set<Categoria> categorias = new HashSet<>();
+
+	// A Interface Set informa para o JPA que não vai admintir repetição do mesmo
+	// item.
+	@OneToMany(mappedBy = "id.produto")
+	private Set<ItensDoPedido> itens = new HashSet<>();
 
 	public Produto() {
 
@@ -87,6 +94,20 @@ public class Produto implements Serializable {
 
 	public Set<Categoria> getCategorias() {
 		return categorias;
+	}
+
+	// varrer a coleção de Pedidos e para cada pedidos eu vou buscar o pedido
+	// associado a ele.
+	@JsonIgnore
+	public Set<Pedido> getPedidos() {
+		Set<Pedido> elemento = new HashSet<>();
+		// percorrer a coleção e para cada objeto itensDoPedido x contido na minha lista
+		// de itens
+		// adicionar o elemento x.getPedido.
+		for (ItensDoPedido x : itens) {
+			elemento.add(x.getPedido());
+		}
+		return elemento;
 	}
 
 	@Override

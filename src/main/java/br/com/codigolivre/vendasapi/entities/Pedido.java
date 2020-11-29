@@ -36,7 +36,6 @@ public class Pedido implements Serializable {
 	@JoinColumn(name = "cliente_id")
 	private Usuario cliente;
 
-	// fazer o método get
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItensDoPedido> itens = new HashSet<>();
 
@@ -85,6 +84,7 @@ public class Pedido implements Serializable {
 		this.cliente = cliente;
 	}
 
+	// método get
 	public Set<ItensDoPedido> getItens() {
 		return itens;
 	}
