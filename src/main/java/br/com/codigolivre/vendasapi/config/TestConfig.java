@@ -2,7 +2,6 @@ package br.com.codigolivre.vendasapi.config;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 
 import br.com.codigolivre.vendasapi.entities.Categoria;
 import br.com.codigolivre.vendasapi.entities.ItensDoPedido;
+import br.com.codigolivre.vendasapi.entities.Pagamento;
 import br.com.codigolivre.vendasapi.entities.Pedido;
 import br.com.codigolivre.vendasapi.entities.Produto;
 import br.com.codigolivre.vendasapi.entities.Usuario;
@@ -96,6 +96,12 @@ public class TestConfig implements CommandLineRunner {
 		ItensDoPedido ped4 = new ItensDoPedido(prod5, p3, 2, prod5.getPreco());
 
 		itensDoPedidoRepository.saveAll(Arrays.asList(ped1, ped2, ped3, ped4));
+
+		Pagamento pag1 = new Pagamento(null, Instant.parse("2019-06-20T21:53:07Z"), p1);
+
+		p1.setPagamento(pag1);
+
+		pedidoRepository.save(p1);
 
 	}
 
