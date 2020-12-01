@@ -1,6 +1,7 @@
 package br.com.codigolivre.vendasapi.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +44,7 @@ public class Pedido implements Serializable {
 
 	// no caso do OneToOne, estamos mapeando as duas entidades para ter o mesmo id
 	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
-	private Pagamento pagamento; 
+	private Pagamento pagamento;
 
 	public Pedido() {
 
@@ -101,6 +102,14 @@ public class Pedido implements Serializable {
 	// método get
 	public Set<ItensDoPedido> getItens() {
 		return itens;
+	}
+
+	public BigDecimal getTotal() {
+		BigDecimal soma = BigDecimal.ZERO;
+		for (ItensDoPedido x : itens) {
+			soma = soma.add(x.getSubTotal());
+		}
+		return soma;
 	}
 
 	@Override

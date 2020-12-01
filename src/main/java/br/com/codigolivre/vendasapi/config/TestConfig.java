@@ -89,7 +89,7 @@ public class TestConfig implements CommandLineRunner {
 		usuarioRepository.saveAll(Arrays.asList(u1, u2));
 
 		pedidoRepository.saveAll(Arrays.asList(p1, p2, p3));
-
+		
 		ItensDoPedido ped1 = new ItensDoPedido(prod1, p1, 2, prod1.getPreco());
 		ItensDoPedido ped2 = new ItensDoPedido(prod3, p1, 1, prod3.getPreco());
 		ItensDoPedido ped3 = new ItensDoPedido(prod3, p2, 2, prod3.getPreco());
@@ -102,7 +102,6 @@ public class TestConfig implements CommandLineRunner {
 		p1.setPagamento(pag1);
 
 		pedidoRepository.save(p1);
-
 	}
 
 }

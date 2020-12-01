@@ -67,6 +67,10 @@ public class ItensDoPedido implements Serializable {
 		this.preco = preco;
 	}
 
+	public BigDecimal getSubTotal() {
+		return BigDecimal.valueOf(quantidade).multiply(preco);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
