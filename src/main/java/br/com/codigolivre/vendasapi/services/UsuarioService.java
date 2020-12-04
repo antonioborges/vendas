@@ -38,4 +38,17 @@ public class UsuarioService {
 		findById(id);
 		usuarioRepository.deleteById(id);
 	}
+
+	public Usuario update(Long id, Usuario obj) {
+		Usuario usuario = usuarioRepository.getOne(id);
+		updateData(usuario, obj);
+		return usuarioRepository.save(usuario);
+	}
+
+	// atualizar os dados do usuario, com base no que veio do obj.
+	private void updateData(Usuario usuario, Usuario obj) {
+		usuario.setNome(obj.getNome());
+		usuario.setEmail(obj.getEmail());
+		usuario.setTelefone(obj.getTelefone());
+	}
 }
