@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.codigolivre.vendasapi.entities.Usuario;
 import br.com.codigolivre.vendasapi.repositories.UsuarioRepository;
+import br.com.codigolivre.vendasapi.services.exceptions.DatabaseException;
+import br.com.codigolivre.vendasapi.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UsuarioService {
@@ -24,10 +30,9 @@ public class UsuarioService {
 		return usuarios;
 	}
 
-	// fazer tratamento de excessão.
 	public Usuario findById(Long id) {
 		Optional<Usuario> obj = usuarioRepository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	public Usuario insert(Usuario obj) {
@@ -35,14 +40,25 @@ public class UsuarioService {
 	}
 
 	public void delete(Long id) {
-		findById(id);
-		usuarioRepository.deleteById(id);
+		try {
+			usuarioRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
+
 	}
 
 	public Usuario update(Long id, Usuario obj) {
-		Usuario usuario = usuarioRepository.getOne(id);
-		updateData(usuario, obj);
-		return usuarioRepository.save(usuario);
+		try {
+			Usuario usuario = usuarioRepository.getOne(id);
+			updateData(usuario, obj);
+			return usuarioRepository.save(usuario);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+
 	}
 
 	// atualizar os dados do usuario, com base no que veio do obj.
